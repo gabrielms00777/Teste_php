@@ -1,6 +1,11 @@
 <?php
+$arquivo = 'log.txt';
 
-$log = file_get_contents('log.txt');
+if(!file_exists($arquivo)){
+    die('Arquivo de log não encontrado.');
+}
+
+$log = file_get_contents($arquivo);
 $log = explode("\n", $log);
 array_shift($log); 
 
