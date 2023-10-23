@@ -17,6 +17,10 @@ foreach ($log as $linha) {
         
         $pilotos[$posicao]['tempo'] = somarTempos($pilotos[$posicao]['tempo'], $dados[5]);
 
+        if(converterTempoParaSegundos($dados[5]) < converterTempoParaSegundos($pilotos[$posicao]['melhor'])){
+            $pilotos[$posicao]['melhor'] = $dados[5];
+        }
+
     } else {
         $pilotos[] = [
             'codigo' => $dados[1],
@@ -33,7 +37,7 @@ $pilotos = ordenarPilotosPeloTempo($pilotos);
 $i = 1;
 
 $html = '<table border="1">';
-$html .= '<tr><th>Posição</th><th>Código Píloto</th><th>Nome Píloto</th><th>Voltas</th><th>Tempo Total</th></tr>';
+$html .= '<tr><th>Posição</th><th>Código Píloto</th><th>Nome Píloto</th><th>Voltas</th><th>Tempo Total</th><th>Melhor Volta</th></tr>';
 foreach ($pilotos as $piloto) {
     $html .= '<tr>';
     $html .= '<td>' . $i++ . '</td>';
@@ -41,6 +45,7 @@ foreach ($pilotos as $piloto) {
     $html .= '<td>' . $piloto['nome'] . '</td>';
     $html .= '<td>' . $piloto['voltas'] . '</td>';
     $html .= '<td>' . $piloto['tempo'] . '</td>';
+    $html .= '<td>' . $piloto['melhor'] . '</td>';
     $html .= '</tr>';
 }
 $html .= '</table>';
