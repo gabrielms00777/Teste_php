@@ -10,6 +10,11 @@ $log = explode("\n", $log);
 array_shift($log); 
 
 $pilotos = [];
+$melhor_volta = [
+    'tempo' => '1000:00.000',
+    'piloto' => ''
+];
+
 foreach ($log as $linha) {
     $dados = explode(' ', $linha);
 
@@ -35,6 +40,11 @@ foreach ($log as $linha) {
             'melhor' => $dados[5],
         ];
     }
+
+    if(converterTempoParaSegundos($dados[5]) < converterTempoParaSegundos($melhor_volta['tempo'])){
+        $melhor_volta['tempo'] = $dados[5];
+        $melhor_volta['piloto'] = $dados[3];
+    }
 }
 
 $pilotos = ordenarPilotosPeloTempo($pilotos);
@@ -42,7 +52,7 @@ $pilotos = ordenarPilotosPeloTempo($pilotos);
 $i = 1;
 
 $html = '<table border="1">';
-$html .= '<tr><th>Posição</th><th>Código Píloto</th><th>Nome Píloto</th><th>Voltas</th><th>Tempo Total</th><th>Melhor Volta</th></tr>';
+$html .= '<tr><th>Posição</th><th>Código Piloto</th><th>Nome Piloto</th><th>Voltas</th><th>Tempo Total</th><th>Melhor Volta</th></tr>';
 foreach ($pilotos as $piloto) {
     $html .= '<tr>';
     $html .= '<td>' . $i++ . '</td>';
@@ -56,6 +66,8 @@ foreach ($pilotos as $piloto) {
 $html .= '</table>';
 
 echo $html;
+
+echo "<p>A melhor volta da corrida foi {$melhor_volta['tempo']} do piloto {$melhor_volta['piloto']}</p>";
 
 function somarTempos(string $tempo1, string $tempo2): string {
     [$minutos1, $segundos1, $milissegundos1] = preg_split("/[:.]/", $tempo1);
